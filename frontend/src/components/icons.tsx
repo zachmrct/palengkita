@@ -1,4 +1,5 @@
-import Svg, { Circle, Path } from 'react-native-svg';
+import type { ReactNode } from 'react';
+import Svg, { Circle, Path, Rect } from 'react-native-svg';
 
 type IconProps = {
   size?: number;
@@ -88,3 +89,153 @@ export function GoogleLogo({ size = 24 }: { size?: number }) {
     </Svg>
   );
 }
+
+/* ------------------------------------------------------------------ */
+/* Icons for the signed-in app (home, recipe detail, tab bar)          */
+/* ------------------------------------------------------------------ */
+
+type LineProps = IconProps & { fill?: string };
+
+function Line({
+  size = 20,
+  color = '#000',
+  strokeWidth = 1.8,
+  fill = 'none',
+  children,
+}: LineProps & { children: ReactNode }) {
+  return (
+    <Svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill={fill}
+      stroke={color}
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {children}
+    </Svg>
+  );
+}
+
+export const MapPinIcon = (p: LineProps) => (
+  <Line {...p}>
+    <Path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z" />
+    <Circle cx={12} cy={10} r={3} />
+  </Line>
+);
+
+export const ChevronDownIcon = (p: LineProps) => (
+  <Line {...p}>
+    <Path d="M6 9l6 6 6-6" />
+  </Line>
+);
+
+export const ChevronRightIcon = (p: LineProps) => (
+  <Line {...p}>
+    <Path d="M9 5l7 7-7 7" />
+  </Line>
+);
+
+export const SearchIcon = (p: LineProps) => (
+  <Line {...p}>
+    <Circle cx={11} cy={11} r={7} />
+    <Path d="M21 21l-4.3-4.3" />
+  </Line>
+);
+
+export const SlidersIcon = (p: LineProps) => (
+  <Line {...p}>
+    <Path d="M6 8h12M6 12h12M6 16h12" />
+  </Line>
+);
+
+export const ClockIcon = (p: LineProps) => (
+  <Line {...p}>
+    <Circle cx={12} cy={12} r={9} />
+    <Path d="M12 7v5l3 2" />
+  </Line>
+);
+
+export const ServingsIcon = (p: LineProps) => (
+  <Line {...p}>
+    <Circle cx={9} cy={7.5} r={3.5} />
+    <Path d="M3 20v-1.5A4.5 4.5 0 0 1 7.5 14h3A4.5 4.5 0 0 1 15 18.5V20" />
+    <Circle cx={17} cy={11} r={2.5} />
+    <Path d="M18 15.2a3.5 3.5 0 0 1 3 3.3V20" />
+  </Line>
+);
+
+/** Small three-bar difficulty glyph. `colorful` matches the compact recipe cards. */
+export function DifficultyIcon({ size = 16, colorful = false }: { size?: number; colorful?: boolean }) {
+  const [a, b, c] = colorful ? ['#2C7B4D', '#F4C04E', '#D9534F'] : ['#2C7B4D', '#2C7B4D', '#2C7B4D'];
+  return (
+    <Svg width={size} height={size} viewBox="0 0 16 16">
+      <Rect x={1.5} y={9} width={3.2} height={5.5} rx={0.8} fill={a} />
+      <Rect x={6.4} y={5.5} width={3.2} height={9} rx={0.8} fill={b} />
+      <Rect x={11.3} y={1.5} width={3.2} height={13} rx={0.8} fill={c} />
+    </Svg>
+  );
+}
+
+export const HeartIcon = ({ filled = false, ...p }: LineProps & { filled?: boolean }) => (
+  <Line {...p} fill={filled ? (p.color ?? '#000') : 'none'}>
+    <Path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z" />
+  </Line>
+);
+
+export const MinusIcon = (p: LineProps) => (
+  <Line {...p}>
+    <Path d="M5 12h14" />
+  </Line>
+);
+
+export const PlusIcon = (p: LineProps) => (
+  <Line {...p}>
+    <Path d="M12 5v14M5 12h14" />
+  </Line>
+);
+
+export const CloseIcon = (p: LineProps) => (
+  <Line {...p}>
+    <Path d="M6 6l12 12M18 6L6 18" />
+  </Line>
+);
+
+export const HomeTabIcon = ({ filled = false, ...p }: LineProps & { filled?: boolean }) => (
+  <Line {...p} fill={filled ? (p.color ?? '#000') : 'none'}>
+    <Path d="M3 11l9-8 9 8" />
+    <Path d="M5 9.5V20h5v-6h4v6h5V9.5" />
+  </Line>
+);
+
+export const BookIcon = (p: LineProps) => (
+  <Line {...p}>
+    <Path d="M2 5h6.5A3.5 3.5 0 0 1 12 8.5V21a3 3 0 0 0-3-3H2z" />
+    <Path d="M22 5h-6.5A3.5 3.5 0 0 0 12 8.5V21a3 3 0 0 1 3-3h7z" />
+  </Line>
+);
+
+export const StoreIcon = (p: LineProps) => (
+  <Line {...p}>
+    <Path d="M4 9l1.5-5h13L20 9" />
+    <Path d="M4 9h16v0a2.67 2.67 0 0 1-5.33 0 2.67 2.67 0 0 1-5.34 0A2.67 2.67 0 0 1 4 9z" />
+    <Path d="M5 11.5V20h14v-8.5" />
+    <Path d="M10 20v-5h4v5" />
+  </Line>
+);
+
+export const BagIcon = (p: LineProps) => (
+  <Line {...p}>
+    <Path d="M6 7h12l1 14H5z" />
+    <Path d="M9 10V6a3 3 0 0 1 6 0v4" />
+  </Line>
+);
+
+export const UserIcon = (p: LineProps) => (
+  <Line {...p}>
+    <Circle cx={12} cy={8} r={4} />
+    <Path d="M4 21v-1.5A5.5 5.5 0 0 1 9.5 14h5a5.5 5.5 0 0 1 5.5 5.5V21" />
+  </Line>
+);

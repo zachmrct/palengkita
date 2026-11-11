@@ -9,6 +9,8 @@ type Props = {
   accent: string;
   /** Put the accent on its own line (login) instead of flowing inline (sign up). */
   stacked?: boolean;
+  /** Font size in points. Defaults to 35 (auth screens). */
+  size?: number;
 };
 
 /**
@@ -16,7 +18,8 @@ type Props = {
  * accent is slanted with a skew transform. That renders the same on iOS and
  * Android instead of depending on each platform's faux-italic behavior.
  */
-export function Heading({ lead, accent, stacked = false }: Props) {
+export function Heading({ lead, accent, stacked = false, size = 35 }: Props) {
+  const sizeStyle = { fontSize: size, lineHeight: Math.round(size * 1.12) };
   return (
     <View
       accessible
@@ -24,8 +27,8 @@ export function Heading({ lead, accent, stacked = false }: Props) {
       accessibilityLabel={`${lead} ${accent}`}
       style={[styles.row, stacked && styles.stacked]}
     >
-      <Text style={[styles.text, !stacked && styles.leadInline]}>{lead}</Text>
-      <Text style={[styles.text, styles.accent]}>{accent}</Text>
+      <Text style={[styles.text, sizeStyle, !stacked && styles.leadInline]}>{lead}</Text>
+      <Text style={[styles.text, sizeStyle, styles.accent]}>{accent}</Text>
     </View>
   );
 }

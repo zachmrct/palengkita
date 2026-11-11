@@ -62,7 +62,7 @@ export default function LoginScreen() {
     >
       <View style={styles.headingBlock}>
         <Heading lead="Maligayang" accent="pagbabalik." stacked />
-        <Text style={styles.subtitle}>Log in to see what's cheap and fresh near you.</Text>
+        <Text style={styles.subtitle}>Log in to see what&apos;s cheap and fresh near you.</Text>
       </View>
 
       <View style={styles.field}>

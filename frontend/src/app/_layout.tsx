@@ -1,4 +1,6 @@
 import {
+  BricolageGrotesque_500Medium,
+  BricolageGrotesque_600SemiBold,
   BricolageGrotesque_700Bold,
   BricolageGrotesque_800ExtraBold,
 } from '@expo-google-fonts/bricolage-grotesque';
@@ -15,6 +17,7 @@ import { useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { AuthProvider, useAuth } from '@/context/AuthContext';
+import { ListProvider } from '@/context/ListContext';
 import { colors } from '@/theme';
 
 SplashScreen.preventAutoHideAsync();
@@ -30,8 +33,6 @@ function RootStack() {
         animation: 'slide_from_right',
       }}
     >
-      <Stack.Screen name="index" options={{ animation: 'none' }} />
-
       {/* Signed out */}
       <Stack.Protected guard={!user}>
         <Stack.Screen name="login" options={{ animation: 'fade' }} />
@@ -40,7 +41,8 @@ function RootStack() {
 
       {/* Signed in */}
       <Stack.Protected guard={!!user}>
-        <Stack.Screen name="home" options={{ animation: 'fade' }} />
+        <Stack.Screen name="(tabs)" options={{ animation: 'fade' }} />
+        <Stack.Screen name="recipe/[id]" />
       </Stack.Protected>
     </Stack>
   );
@@ -48,6 +50,8 @@ function RootStack() {
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
+    BricolageGrotesque_500Medium,
+    BricolageGrotesque_600SemiBold,
     BricolageGrotesque_700Bold,
     BricolageGrotesque_800ExtraBold,
     Figtree_400Regular,
@@ -67,7 +71,9 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <AuthProvider>
-        <RootStack />
+        <ListProvider>
+          <RootStack />
+        </ListProvider>
       </AuthProvider>
     </SafeAreaProvider>
   );

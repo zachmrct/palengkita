@@ -27,7 +27,13 @@
       "expo-router",
       "expo-font",
       "expo-image",
-      "expo-splash-screen"
+      "expo-splash-screen",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Palengkita uses your location to show nearby palengkes, distances and prices."
+        }
+      ]
     ],
     "scheme": "palengkita",
     "backgroundColor": "#F9F1D9"
