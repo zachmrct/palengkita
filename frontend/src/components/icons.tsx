@@ -239,3 +239,21 @@ export const UserIcon = (p: LineProps) => (
     <Path d="M4 21v-1.5A5.5 5.5 0 0 1 9.5 14h5a5.5 5.5 0 0 1 5.5 5.5V21" />
   </Line>
 );
+
+/** Shallow basket with a handle, used for the Recipes tab. */
+export const BasketIcon = (p: LineProps) => (
+  <Line {...p}>
+    <Path d="M3 10h18l-1.6 8.4A2 2 0 0 1 17.4 20H6.6a2 2 0 0 1-2-1.6z" />
+    <Path d="M8 10l3-6M16 10l-3-6" />
+    <Path d="M9.5 13.5v3M12 13.5v3M14.5 13.5v3" />
+  </Line>
+);
+
+/** Market building, used for the Markets tab. */
+export const BuildingIcon = (p: LineProps) => (
+  <Line {...p}>
+    <Rect x={5} y={3} width={14} height={18} rx={1.5} />
+    <Path d="M9 7.5h.01M12 7.5h.01M15 7.5h.01M9 11h.01M12 11h.01M15 11h.01" />
+    <Path d="M10 21v-4h4v4" />
+  </Line>
+);

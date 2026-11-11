@@ -54,7 +54,13 @@ export default function HomeScreen() {
 
   const showPick = recipeMatches(todaysPick);
   const carousel = useMemo(
-    () => recipes.filter((r) => r.id !== todaysPick.id && recipeMatches(r)),
+    () => {
+      const matching = recipes.filter(
+        (r) => r.id !== todaysPick.id && r.cardPrice <= 250 && recipeMatches(r),
+      );
+      // Without a search, keep this a short "what can I cook" shelf; the Recipes tab has the rest.
+      return q ? matching : matching.slice(0, 5);
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [q],
   );

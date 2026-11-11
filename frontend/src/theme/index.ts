@@ -43,6 +43,8 @@ export const palette = {
   tabBar: '#FFFCF3',
   headerButton: '#264F41',
   error: '#B3412F',
+  /** Notification dot on the My List tab. */
+  alert: '#E8573D',
 } as const;
 
 /** Keys must match the names registered in `useFonts` (see app/_layout.tsx). */

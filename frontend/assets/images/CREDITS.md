@@ -29,5 +29,12 @@ All from Pexels (Pexels License, no attribution required). Open
 | `home/ing-kamatis.jpg` | 3938343 | Kamatis ingredient |
 | `home/ing-sibuyas.jpg` | 10159434 | Sibuyas ingredient |
 | `home/ing-bawang.jpg` | 25315388 | Bawang ingredient |
+| `home/recipe-sardinas-misua.jpg` | 8992932 | "Sardinas with Misua" (noodle soup stand-in) |
+| `home/recipe-ginataang-kalabasa.jpg` | 40666930 | "Ginataang Kalabasa at Sitaw" (squash stand-in) |
+| `home/recipe-arroz-caldo.jpg` | 8329237 | "Arroz Caldo" |
+| `home/recipe-pinakbet.jpg` | 32796701 | "Pinakbet" (raw squash, beans, okra, eggplant) |
+| `home/recipe-sinigang-bangus.jpg` | 8848733 | "Sinigang na Bangus" (sinigang na hipon stand-in) |
+| `home/recipe-tinolang-manok.jpg` | 35096093 | "Tinolang Manok" (herb soup with meat stand-in) |
+| `home/recipe-chicken-adobo.jpg` | 6896058 | "Chicken Adobo" (pork adobo stand-in) |
 
 These are stand-ins. No free photo matched the exact dishes, so swap in your own photography when you have it.
