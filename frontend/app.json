@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "Palengkita",
+    "slug": "palengkita",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.palengkita.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#1C3A2D",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "package": "com.palengkita.app"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-image",
+      "expo-splash-screen"
+    ],
+    "scheme": "palengkita",
+    "backgroundColor": "#F9F1D9"
+  }
+}
