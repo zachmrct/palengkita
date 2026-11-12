@@ -17,7 +17,7 @@ import { useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { AuthProvider, useAuth } from '@/context/AuthContext';
-import { ListProvider } from '@/context/ListContext';
+import { PalengkitaProvider } from '@/context/PalengkitaContext';
 import { colors } from '@/theme';
 
 SplashScreen.preventAutoHideAsync();
@@ -42,7 +42,6 @@ function RootStack() {
       {/* Signed in */}
       <Stack.Protected guard={!!user}>
         <Stack.Screen name="(tabs)" options={{ animation: 'fade' }} />
-        <Stack.Screen name="recipe/[id]" />
       </Stack.Protected>
     </Stack>
   );
@@ -71,9 +70,9 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <AuthProvider>
-        <ListProvider>
+        <PalengkitaProvider>
           <RootStack />
-        </ListProvider>
+        </PalengkitaProvider>
       </AuthProvider>
     </SafeAreaProvider>
   );

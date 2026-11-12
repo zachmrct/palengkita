@@ -1,11 +1,10 @@
-import { Placeholder } from '@/components/Placeholder';
+import { MealBrowser } from '@/components/meals/MealBrowser';
+import { Screen } from '@/components/kit/Screen';
 
 export default function RecipesScreen() {
   return (
-    <Placeholder
-      kicker="RECIPES"
-      title="Mga Recipe"
-      body="Browse and filter every recipe here. This screen is coming soon."
-    />
+    <Screen>
+      <MealBrowser />
+    </Screen>
   );
 }

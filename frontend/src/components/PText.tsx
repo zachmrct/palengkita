@@ -5,11 +5,12 @@ import { fonts } from '@/theme';
 
 const PESO = '₱';
 
-/** Picks a Bricolage weight that visually matches the surrounding Figtree text. */
+/** Picks a Bricolage weight that visually matches the surrounding text (Figtree). */
 function pesoFontFor(fontFamily?: string): string | null {
   switch (fontFamily) {
     case fonts.display:
     case fonts.displayHeavy:
+    case fonts.serif:
       return null; // already Bricolage, which has the glyph
     case fonts.bodyBold:
       return fonts.peso700;
@@ -38,7 +39,8 @@ function withPeso(node: ReactNode, pesoFont: string | null): ReactNode {
 export function PText({ children, style, ...props }: TextProps) {
   const pesoFont = pesoFontFor(StyleSheet.flatten(style)?.fontFamily);
   return (
-    <Text style={style} {...props}>
+    // Prices and quantities always use tabular figures so columns line up.
+    <Text style={[style, { fontVariant: ['tabular-nums'] }]} {...props}>
       {Children.map(children, (child) => withPeso(child, pesoFont))}
     </Text>
   );

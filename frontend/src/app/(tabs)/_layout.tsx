@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router/js-tabs';
 
 import { TabBar } from '@/components/TabBar';
-import { palette } from '@/theme';
+import { ds } from '@/theme';
 
 export default function TabsLayout() {
   return (
@@ -9,7 +9,7 @@ export default function TabsLayout() {
       tabBar={(props) => <TabBar {...props} />}
       screenOptions={{
         headerShown: false,
-        sceneStyle: { backgroundColor: palette.bg },
+        sceneStyle: { backgroundColor: ds.canvas },
       }}
     >
       <Tabs.Screen name="index" options={{ title: 'Home' }} />
@@ -17,6 +17,9 @@ export default function TabsLayout() {
       <Tabs.Screen name="markets" options={{ title: 'Markets' }} />
       <Tabs.Screen name="list" options={{ title: 'My List' }} />
       <Tabs.Screen name="profile" options={{ title: 'Profile' }} />
+      {/* Reachable by link only; they live here so the bottom nav stays visible, as in the design. */}
+      <Tabs.Screen name="schedule" options={{ title: 'Schedule', href: null }} />
+      <Tabs.Screen name="recipe/[id]" options={{ title: 'Recipe', href: null }} />
     </Tabs>
   );
 }

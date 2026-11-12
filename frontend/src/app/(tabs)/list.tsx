@@ -1,105 +1,108 @@
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ShoppingBasket, Store, Trash2 } from 'lucide-react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { PText } from '@/components/PText';
-import { Card } from '@/components/ui';
-import { useList } from '@/context/ListContext';
-import { fonts, MAX_CONTENT_WIDTH, palette, SCREEN_PADDING } from '@/theme';
+import { Button } from '@/components/kit/Button';
+import { Checkbox } from '@/components/kit/Checkbox';
+import { Screen } from '@/components/kit/Screen';
+import { Em, Greeting, H2, typography } from '@/components/kit/Typography';
+import { usePalengkita } from '@/context/PalengkitaContext';
+import { ds, fonts } from '@/theme';
 
 export default function ListScreen() {
-  const insets = useSafeAreaInsets();
-  const { items, total, removeItem, clear } = useList();
+  const { list, toggleItem, removeItem } = usePalengkita();
+  const checkedCount = list.filter((i) => i.checked).length;
+  const remaining = list.filter((i) => !i.checked).reduce((sum, i) => sum + i.price, 0);
 
   return (
-    <View style={styles.root}>
-      <StatusBar style="dark" />
-      <ScrollView
-        contentContainerStyle={{ alignItems: 'center', paddingTop: insets.top + 32, paddingBottom: 28 }}
-      >
-        <View style={styles.inner}>
-          <Text style={styles.kicker}>MY LIST</Text>
-          <Text style={styles.title} accessibilityRole="header">
-            Listahan ng bibilhin
-          </Text>
+    <Screen>
+      <Greeting
+        icon={ShoppingBasket}
+        eyebrow="READY, SET, PALENGKE"
+        title={
+          <>
+            My <Em>list.</Em>
+          </>
+        }
+        subtitle="Fresh ingredients for your next lutong bahay."
+      />
 
-          {items.length === 0 ? (
-            <Text style={styles.body}>
-              Nothing here yet. Open a recipe and tap ADD TO MY LIST to collect what you need to buy.
-            </Text>
-          ) : (
-            <>
-              <Card style={styles.card}>
-                {items.map((item, i) => (
-                  <View key={item.key} style={[styles.row, i > 0 && styles.rowBorder]}>
-                    <View style={{ flex: 1 }}>
-                      <Text style={styles.name}>{item.name}</Text>
-                      <Text style={styles.meta}>
-                        {item.qtyLabel} {'·'} {item.recipeTitle}
-                      </Text>
-                    </View>
-                    <PText style={styles.price}>{`₱${item.price}`}</PText>
-                    <Pressable
-                      onPress={() => removeItem(item.key)}
-                      hitSlop={10}
-                      accessibilityRole="button"
-                      accessibilityLabel={`Remove ${item.name}`}
-                    >
-                      <Text style={styles.remove}>{'✕'}</Text>
-                    </Pressable>
+      {list.length > 0 ? (
+        <>
+          <View style={styles.summary}>
+            <Text style={styles.summaryText}>{`${checkedCount} of ${list.length} ingredients checked`}</Text>
+            <PText style={styles.summaryTotal}>{`~₱${remaining}`}</PText>
+          </View>
+
+          <View>
+            {list.map((i) => (
+              <View key={i.name} style={styles.item}>
+                <Pressable
+                  onPress={() => toggleItem(i.name)}
+                  accessibilityRole="checkbox"
+                  accessibilityLabel={`${i.name}, ${i.amount}`}
+                  accessibilityState={{ checked: i.checked }}
+                  style={[styles.itemLabel, i.checked && { opacity: 0.5 }]}
+                >
+                  <Checkbox checked={i.checked} />
+                  <Text style={styles.emoji}>{i.emoji}</Text>
+                  <View style={{ gap: 5 }}>
+                    <Text style={[styles.name, i.checked && styles.struck]}>{i.name}</Text>
+                    <Text style={[styles.amount, i.checked && styles.struck]}>{i.amount}</Text>
                   </View>
-                ))}
-              </Card>
-              <View style={styles.totalRow}>
-                <Text style={styles.totalLabel}>
-                  Total {'·'} {items.length} {items.length === 1 ? 'item' : 'items'}
-                </Text>
-                <PText style={styles.total}>{`₱${total}`}</PText>
+                </Pressable>
+                <PText style={styles.price}>{`₱${i.price}`}</PText>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  icon={Trash2}
+                  accessibilityLabel={`Remove ${i.name}`}
+                  onPress={() => removeItem(i.name)}
+                />
               </View>
-              <Pressable onPress={clear} accessibilityRole="button" accessibilityLabel="Clear list">
-                <Text style={styles.clear}>Clear list</Text>
-              </Pressable>
-            </>
-          )}
+            ))}
+          </View>
+
+          <Text style={typography.estimateNote}>Sample estimates. Check prices with your local vendors.</Text>
+          <Button size="lg" href="/markets" icon={Store} label="Find a nearby market" />
+        </>
+      ) : (
+        <View style={styles.empty}>
+          <ShoppingBasket size={45} color={ds.foreground} />
+          <H2>A fresh start for your basket.</H2>
+          <Text style={typography.muted}>Pick a recipe and bring its ingredients here.</Text>
+          <Button href="/recipes" label="Find something to cook" />
         </View>
-      </ScrollView>
-    </View>
+      )}
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: palette.bg },
-  inner: { width: '100%', maxWidth: MAX_CONTENT_WIDTH, paddingHorizontal: SCREEN_PADDING },
-  kicker: { fontFamily: fonts.bodyBold, fontSize: 12.5, letterSpacing: 2.2, color: palette.green },
-  title: {
-    marginTop: 10,
-    fontFamily: fonts.display,
-    fontSize: 32,
-    lineHeight: 38,
-    letterSpacing: -0.5,
-    color: palette.ink,
-  },
-  body: { marginTop: 10, fontFamily: fonts.body, fontSize: 16, lineHeight: 22, color: palette.muted },
-  card: { marginTop: 20, paddingHorizontal: 16 },
-  row: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 14 },
-  rowBorder: { borderTopWidth: 1, borderTopColor: palette.line },
-  name: { fontFamily: fonts.bodyBold, fontSize: 16, color: palette.ink },
-  meta: { marginTop: 2, fontFamily: fonts.body, fontSize: 13, color: palette.muted },
-  price: { fontFamily: fonts.bodyBold, fontSize: 16, color: palette.ink },
-  remove: { fontFamily: fonts.bodyBold, fontSize: 14, color: palette.muted, paddingLeft: 4 },
-  totalRow: {
-    marginTop: 18,
+  summary: {
+    padding: 18,
+    backgroundColor: ds.mint,
+    borderRadius: 8,
+    marginBottom: 20,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  totalLabel: { fontFamily: fonts.bodySemiBold, fontSize: 15, color: palette.muted },
-  total: { fontFamily: fonts.display, fontSize: 28, color: palette.ink },
-  clear: {
-    marginTop: 16,
-    fontFamily: fonts.bodyBold,
-    fontSize: 14,
-    color: palette.ink,
-    textDecorationLine: 'underline',
+  summaryText: { fontFamily: fonts.sans, fontSize: 11, color: ds.foreground },
+  summaryTotal: { fontFamily: fonts.sansBold, fontSize: 24, color: ds.foreground },
+  item: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: ds.border,
   },
+  itemLabel: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 12 },
+  emoji: { fontSize: 27 },
+  name: { fontFamily: fonts.sansBold, fontSize: 13, color: ds.foreground },
+  amount: { fontFamily: fonts.sans, fontSize: 10, color: ds.mutedForeground },
+  struck: { textDecorationLine: 'line-through' },
+  price: { fontFamily: fonts.sans, fontSize: 14, color: ds.foreground },
+  empty: { alignItems: 'center', paddingVertical: 55, paddingHorizontal: 15, gap: 14 },
 });

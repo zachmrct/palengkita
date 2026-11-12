@@ -19,32 +19,6 @@ export const colors = {
   success: '#2F7A4B',
 } as const;
 
-/**
- * Palette for the signed-in app (home, recipe detail). Sampled from the home and
- * recipe Figma screens, which use a slightly deeper green than the auth screens.
- */
-export const palette = {
-  ink: '#0E3B2C',
-  bg: '#FBF1D6',
-  surface: '#FFFDF5',
-  sage: '#DDEBD9',
-  sageSoft: '#E3ECD8',
-  chip: '#E7F0E1',
-  gold: '#F4C04E',
-  goldSoft: '#FDF1D4',
-  green: '#2C7B4D',
-  basket: '#174F3C',
-  basketLine: '#2A6350',
-  muted: '#5E6D64',
-  placeholder: '#7C8A82',
-  line: '#F0E7CD',
-  border: '#F0E6C8',
-  track: '#EAE2C6',
-  tabBar: '#FFFCF3',
-  headerButton: '#264F41',
-  error: '#B3412F',
-} as const;
-
 /** Keys must match the names registered in `useFonts` (see app/_layout.tsx). */
 export const fonts = {
   display: 'BricolageGrotesque_700Bold',
@@ -60,6 +34,14 @@ export const fonts = {
   peso500: 'BricolageGrotesque_500Medium',
   peso600: 'BricolageGrotesque_600SemiBold',
   peso700: 'BricolageGrotesque_700Bold',
+  /** Redesign: Figtree for text, Bricolage Grotesque SemiBold for headings (typeface spec). */
+  sans: 'Figtree_400Regular',
+  sansMedium: 'Figtree_500Medium',
+  sansSemiBold: 'Figtree_600SemiBold',
+  sansBold: 'Figtree_700Bold',
+  serif: 'BricolageGrotesque_600SemiBold',
+  /** Bricolage has no italic, so the accent word is distinguished by color only. */
+  serifItalic: 'BricolageGrotesque_600SemiBold',
 } as const;
 
 export const radii = {
@@ -73,3 +55,33 @@ export const radii = {
 /** Screen content never stretches wider than this (tablets, web preview). */
 export const MAX_CONTENT_WIDTH = 480;
 export const SCREEN_PADDING = 20;
+
+/**
+ * Design tokens for the redesigned app, converted from the oklch values in the
+ * Lovable project's `styles.css` to sRGB hex.
+ */
+export const ds = {
+  background: '#FEF9EC',
+  canvas: '#ECEDDE',
+  card: '#FFFEF9',
+  foreground: '#0C3726', // also `primary`
+  primaryForeground: '#FFF6DA',
+  mint: '#DEEBD9', // also `secondary`
+  mintButter: '#EAEFD7', // color-mix(mint 55%, butter)
+  butter: '#FCF2D6',
+  softOrange: '#FFE9CD',
+  orange: '#F3872F',
+  green: '#3A7C4D',
+  mutedForeground: '#5D6A5E',
+  border: '#DBDDCA',
+  destructive: '#C13E2E',
+  /** `primary` at 40% / 20% / 13% alpha, used for scrims and hairlines. */
+  scrim: 'rgba(12, 55, 38, 0.4)',
+  primary20: 'rgba(12, 55, 38, 0.2)',
+  primary13: 'rgba(12, 55, 38, 0.13)',
+} as const;
+
+/** The design's mobile breakpoint: screens never grow wider than this. */
+export const SHELL_MAX_WIDTH = 600;
+/** Phones at or below this width use the design's tighter `max-width: 370px` rules. */
+export const COMPACT_WIDTH = 370;
