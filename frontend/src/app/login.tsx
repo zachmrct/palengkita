@@ -2,17 +2,13 @@ import { useRef, useState } from 'react';
 import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 
-import { AuthHero } from '@/components/AuthHero';
-import { AuthScreen } from '@/components/AuthScreen';
-import { GoogleButton, OrDivider, PrimaryButton } from '@/components/Buttons';
+import { AuthShell } from '@/components/AuthShell';
+import { PrimaryButton } from '@/components/Buttons';
 import { InlineLink } from '@/components/FormBits';
-import { Heading } from '@/components/Heading';
 import { TextField, type TextInputHandle } from '@/components/TextField';
 import { useAuth } from '@/context/AuthContext';
-import { colors, fonts } from '@/theme';
+import { ds, fonts } from '@/theme';
 import { isEmailOrUsername } from '@/utils/validation';
-
-const HERO = require('../../assets/images/login-hero.jpg');
 
 type Errors = { identifier?: string; password?: string };
 
@@ -25,6 +21,8 @@ export default function LoginScreen() {
   const [errors, setErrors] = useState<Errors>({});
   const [loading, setLoading] = useState(false);
   const passwordRef = useRef<TextInputHandle>(null);
+
+  const goBack = () => (router.canGoBack() ? router.back() : router.replace('/welcome'));
 
   const validate = (): Errors => {
     const next: Errors = {};
@@ -50,21 +48,7 @@ export default function LoginScreen() {
   };
 
   return (
-    <AuthScreen
-      hero={
-        <AuthHero
-          variant="login"
-          photo={HERO}
-          photoDescription="Kamatis, sitaw, kalabasa and malunggay on a bilao, overhead, in natural morning light"
-          photoFocusY={55}
-        />
-      }
-    >
-      <View style={styles.headingBlock}>
-        <Heading lead="Maligayang" accent="pagbabalik." stacked />
-        <Text style={styles.subtitle}>Log in to see what&apos;s cheap and fresh near you.</Text>
-      </View>
-
+    <AuthShell topPlate="chicken" bottomPlate="adobo" onBack={goBack}>
       <View style={styles.field}>
         <TextField
           label="Email or username"
@@ -122,67 +106,30 @@ export default function LoginScreen() {
         />
       </View>
 
-      <PrimaryButton title="LOG IN" onPress={handleLogin} loading={loading} style={styles.primary} />
-
-      <View style={styles.divider}>
-        <OrDivider />
-      </View>
-
-      <GoogleButton
-        disabled={loading}
-        onPress={() =>
-          // TODO(backend): Google sign-in (expo-auth-session + OAuth client IDs).
-          Alert.alert('Continue with Google', 'Google sign-in will be connected once the backend is ready.')
-        }
-      />
+      <PrimaryButton title="Log in" onPress={handleLogin} loading={loading} style={styles.primary} />
 
       <View style={styles.footer}>
-        <Text style={styles.footerText}>Bago ka rito? </Text>
-        <InlineLink onPress={() => router.push('/signup')}>Gumawa ng account</InlineLink>
+        <Text style={styles.footerText}>Wala ka pang account? </Text>
+        <InlineLink onPress={() => router.replace('/signup')}>Mag-sign up</InlineLink>
       </View>
-    </AuthScreen>
+    </AuthShell>
   );
 }
 
 const styles = StyleSheet.create({
-  headingBlock: {
-    marginTop: 28,
-    marginBottom: 26,
-  },
-  subtitle: {
-    marginTop: 8,
-    fontFamily: fonts.body,
-    fontSize: 16,
-    lineHeight: 22,
-    color: colors.forest,
-  },
-  field: {
-    marginBottom: 18,
-  },
+  field: { marginBottom: 22 },
   forgot: {
-    fontFamily: fonts.bodyBold,
-    fontSize: 14.5,
-    color: colors.link,
-    textDecorationLine: 'underline',
-    textDecorationColor: colors.link,
+    fontFamily: fonts.sansSemiBold,
+    fontSize: 12,
+    color: ds.mutedForeground,
   },
-  primary: {
-    marginTop: 7,
-  },
-  divider: {
-    marginTop: 28,
-    marginBottom: 22,
-  },
+  primary: { marginTop: 14 },
   footer: {
-    marginTop: 36,
+    marginTop: 26,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  footerText: {
-    fontFamily: fonts.body,
-    fontSize: 16,
-    color: colors.forest,
-  },
+  footerText: { fontFamily: fonts.sans, fontSize: 14, color: ds.mutedForeground },
 });

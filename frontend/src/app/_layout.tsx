@@ -13,12 +13,14 @@ import {
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { BrandSplash } from '@/components/BrandSplash';
+import { DishFlightProvider } from '@/components/meals/DishFlight';
 import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { PalengkitaProvider } from '@/context/PalengkitaContext';
-import { colors } from '@/theme';
+import { ds } from '@/theme';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -29,13 +31,14 @@ function RootStack() {
     <Stack
       screenOptions={{
         headerShown: false,
-        contentStyle: { backgroundColor: colors.cream },
+        contentStyle: { backgroundColor: ds.background },
         animation: 'slide_from_right',
       }}
     >
       {/* Signed out */}
       <Stack.Protected guard={!user}>
-        <Stack.Screen name="login" options={{ animation: 'fade' }} />
+        <Stack.Screen name="welcome" options={{ animation: 'fade' }} />
+        <Stack.Screen name="login" />
         <Stack.Screen name="signup" />
       </Stack.Protected>
 
@@ -60,6 +63,8 @@ export default function RootLayout() {
   });
 
   const ready = fontsLoaded || !!fontError;
+  const [splashDone, setSplashDone] = useState(false);
+  const finishSplash = useCallback(() => setSplashDone(true), []);
 
   useEffect(() => {
     if (ready) SplashScreen.hideAsync();
@@ -71,7 +76,10 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <AuthProvider>
         <PalengkitaProvider>
-          <RootStack />
+          <DishFlightProvider>
+            <RootStack />
+          </DishFlightProvider>
+          {splashDone ? null : <BrandSplash onDone={finishSplash} />}
         </PalengkitaProvider>
       </AuthProvider>
     </SafeAreaProvider>

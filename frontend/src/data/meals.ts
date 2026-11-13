@@ -11,6 +11,8 @@ export type Meal = {
   id: string;
   name: string;
   subtitle: string;
+  /** Short taste + contents line used on Home cards. */
+  blurb: string;
   image: ImageSource;
   price: number;
   minutes: number;
@@ -43,6 +45,7 @@ export const meals: Meal[] = [
     id: 'sinigang',
     name: 'Sinigang na Baboy',
     subtitle: 'Asim-kilig, just like home.',
+    blurb: 'Tangy and savory. Tender pork in a tamarind broth with kangkong, labanos and sitaw.',
     image: dish.sinigang,
     price: 85,
     minutes: 45,
@@ -68,6 +71,7 @@ export const meals: Meal[] = [
     id: 'adobo',
     name: 'Chicken Adobo',
     subtitle: 'A classic that never gets old.',
+    blurb: 'Salty, tangy and a little sweet. Chicken braised in toyo, suka, garlic and bay leaf.',
     image: dish.adobo,
     price: 65,
     minutes: 35,
@@ -93,6 +97,7 @@ export const meals: Meal[] = [
     id: 'pinakbet',
     name: 'Pinakbet',
     subtitle: 'A little harvest in every bite.',
+    blurb: 'Savory with a hint of bitter. Kalabasa, sitaw and talong in bagoong.',
     image: dish.pinakbet,
     price: 45,
     minutes: 25,
@@ -116,6 +121,7 @@ export const meals: Meal[] = [
     id: 'tinola',
     name: 'Tinolang Manok',
     subtitle: 'Warm, nourishing, and familiar.',
+    blurb: 'Light, gingery and comforting. Chicken, green papaya and malunggay in clear broth.',
     image: dish.tinola,
     price: 60,
     minutes: 30,
@@ -139,6 +145,7 @@ export const meals: Meal[] = [
     id: 'monggo',
     name: 'Ginisang Monggo',
     subtitle: 'Friday favorite, any day.',
+    blurb: 'Earthy, savory and hearty. Sautéed monggo with garlic, tomato and malunggay.',
     image: dish.monggo,
     price: 35,
     minutes: 40,
@@ -161,6 +168,7 @@ export const meals: Meal[] = [
     id: 'torta',
     name: 'Tortang Talong',
     subtitle: 'Simple ingredients, big sarap.',
+    blurb: 'Smoky and savory. Grilled talong dipped in egg and pan-fried until golden.',
     image: dish.torta,
     price: 30,
     minutes: 20,
@@ -184,6 +192,7 @@ export const meals: Meal[] = [
     id: 'ginataan',
     name: 'Ginataang Kalabasa',
     subtitle: 'Creamy, cozy, coconut goodness.',
+    blurb: 'Creamy, mildly sweet and rich. Kalabasa and sitaw simmered in gata with hipon.',
     image: dish.ginataan,
     price: 50,
     minutes: 25,

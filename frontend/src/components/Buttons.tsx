@@ -1,3 +1,4 @@
+import type { LucideIcon } from 'lucide-react-native';
 import {
   ActivityIndicator,
   Pressable,
@@ -8,20 +9,30 @@ import {
   type ViewStyle,
 } from 'react-native';
 
-import { colors, fonts, radii } from '@/theme';
+import { ds, fonts } from '@/theme';
 
 import { GoogleLogo } from './icons';
 
-type PrimaryProps = {
+type Variant = 'soft' | 'solid' | 'outline';
+
+type PillProps = {
   title: string;
   onPress: () => void;
+  variant?: Variant;
   loading?: boolean;
   disabled?: boolean;
+  icon?: LucideIcon;
+  /** Replaces `icon` with any element (e.g. the Google logo). */
+  leading?: React.ReactNode;
   style?: StyleProp<ViewStyle>;
 };
 
-export function PrimaryButton({ title, onPress, loading = false, disabled = false, style }: PrimaryProps) {
+/** Rounded pill button. `soft` (mint) is the default; `solid` is the strong action; `outline` is quiet. */
+export function PillButton({ title, onPress, variant = 'soft', loading = false, disabled = false, icon: Icon, leading, style }: PillProps) {
   const inactive = disabled || loading;
+  const solid = variant === 'solid';
+  const ink = solid ? ds.primaryForeground : ds.foreground;
+
   return (
     <Pressable
       onPress={onPress}
@@ -30,116 +41,68 @@ export function PrimaryButton({ title, onPress, loading = false, disabled = fals
       accessibilityLabel={title}
       accessibilityState={{ disabled: inactive, busy: loading }}
       style={({ pressed }) => [
-        styles.primary,
-        pressed && styles.primaryPressed,
-        disabled && !loading && styles.primaryDisabled,
+        styles.pill,
+        variant === 'soft' && styles.soft,
+        variant === 'solid' && styles.solid,
+        variant === 'outline' && styles.outline,
+        pressed && styles.pressed,
+        disabled && !loading && styles.disabled,
         style,
       ]}
     >
       {loading ? (
-        <ActivityIndicator color={colors.white} />
+        <ActivityIndicator color={ink} />
       ) : (
-        <Text style={styles.primaryText}>{title}</Text>
+        <View style={styles.content}>
+          {leading ?? (Icon ? <Icon size={20} color={ink} /> : null)}
+          <Text style={[styles.text, { color: ink }]}>{title}</Text>
+        </View>
       )}
     </Pressable>
   );
 }
 
-type GoogleProps = {
-  onPress: () => void;
-  disabled?: boolean;
-};
-
-export function GoogleButton({ onPress, disabled = false }: GoogleProps) {
-  return (
-    <Pressable
-      onPress={onPress}
-      disabled={disabled}
-      accessibilityRole="button"
-      accessibilityLabel="Continue with Google"
-      style={({ pressed }) => [styles.google, pressed && styles.googlePressed]}
-    >
-      <View style={styles.googleContent}>
-        <GoogleLogo size={24} />
-        <Text style={styles.googleText}>Continue with Google</Text>
-      </View>
-    </Pressable>
-  );
+/** Main submit button on the forms. */
+export function PrimaryButton({ title, onPress, loading = false, disabled = false, style }: Omit<PillProps, 'variant' | 'icon' | 'leading'>) {
+  return <PillButton title={title} onPress={onPress} loading={loading} disabled={disabled} style={style} />;
 }
 
-export function OrDivider({ label = 'o' }: { label?: string }) {
+export function GoogleButton({ onPress, disabled = false, style }: { onPress: () => void; disabled?: boolean; style?: StyleProp<ViewStyle> }) {
   return (
-    <View style={styles.divider} accessibilityElementsHidden importantForAccessibility="no">
-      <View style={styles.dividerLine} />
-      <Text style={styles.dividerText}>{label}</Text>
-      <View style={styles.dividerLine} />
-    </View>
+    <PillButton
+      title="Continue with Google"
+      variant="outline"
+      onPress={onPress}
+      disabled={disabled}
+      leading={<GoogleLogo size={22} />}
+      style={style}
+    />
   );
 }
 
 const styles = StyleSheet.create({
-  primary: {
-    height: 54,
-    borderRadius: radii.button,
-    backgroundColor: colors.forest,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: colors.forest,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.22,
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  primaryPressed: {
-    opacity: 0.88,
-    transform: [{ scale: 0.985 }],
-  },
-  primaryDisabled: {
-    opacity: 0.55,
-  },
-  primaryText: {
-    fontFamily: fonts.bodyBold,
-    fontSize: 16,
-    letterSpacing: 1.1,
-    color: colors.white,
-  },
-
-  google: {
+  pill: {
     height: 52,
-    borderRadius: radii.button - 2,
-    borderWidth: 1,
-    borderColor: colors.forest,
+    borderRadius: 26,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'transparent',
+    paddingHorizontal: 22,
   },
-  googlePressed: {
-    backgroundColor: 'rgba(28,58,45,0.07)',
+  soft: {
+    backgroundColor: ds.mint,
+    boxShadow: `0px 6px 14px ${ds.primary13}`,
   },
-  googleContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
+  solid: {
+    backgroundColor: ds.green,
+    boxShadow: `0px 8px 16px ${ds.primary20}`,
   },
-  googleText: {
-    fontFamily: fonts.bodyBold,
-    fontSize: 16,
-    color: colors.forest,
+  outline: {
+    backgroundColor: ds.card,
+    borderWidth: 1,
+    borderColor: ds.border,
   },
-
-  divider: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 14,
-  },
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: colors.divider,
-  },
-  dividerText: {
-    fontFamily: fonts.bodyMedium,
-    fontSize: 13,
-    color: colors.muted,
-  },
+  pressed: { opacity: 0.88, transform: [{ scale: 0.985 }] },
+  disabled: { opacity: 0.55 },
+  content: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  text: { fontFamily: fonts.sansSemiBold, fontSize: 15 },
 });

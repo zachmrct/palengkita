@@ -2,17 +2,13 @@ import { useRef, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 
-import { AuthHero } from '@/components/AuthHero';
-import { AuthScreen } from '@/components/AuthScreen';
+import { AuthShell } from '@/components/AuthShell';
 import { PrimaryButton } from '@/components/Buttons';
 import { Checkbox, InlineLink, RequirementRow } from '@/components/FormBits';
-import { Heading } from '@/components/Heading';
 import { TextField, type TextInputHandle } from '@/components/TextField';
 import { useAuth } from '@/context/AuthContext';
-import { colors, fonts } from '@/theme';
+import { ds, fonts } from '@/theme';
 import { checkPassword, EMAIL_RE, isPasswordValid } from '@/utils/validation';
-
-const HERO = require('../../assets/images/signup-hero.jpg');
 
 type Errors = {
   name?: string;
@@ -22,7 +18,7 @@ type Errors = {
   terms?: string;
 };
 
-const INPUT_HEIGHT = 48;
+const INPUT_HEIGHT = 44;
 
 export default function SignUpScreen() {
   const router = useRouter();
@@ -45,7 +41,7 @@ export default function SignUpScreen() {
   const clear = (key: keyof Errors) =>
     setErrors((e) => (e[key] ? { ...e, [key]: undefined } : e));
 
-  const goBack = () => (router.canGoBack() ? router.back() : router.replace('/login'));
+  const goBack = () => (router.canGoBack() ? router.back() : router.replace('/welcome'));
 
   const validate = (): Errors => {
     const next: Errors = {};
@@ -80,24 +76,7 @@ export default function SignUpScreen() {
     Alert.alert(title, 'This page will be available soon.');
 
   return (
-    <AuthScreen
-      hero={
-        <AuthHero
-          variant="signup"
-          photo={HERO}
-          photoDescription="Hands choosing talong and sitaw at a palengke stall in warm daylight"
-          photoFocusY={55}
-          onBack={goBack}
-        />
-      }
-    >
-      <View style={styles.headingBlock}>
-        <Heading lead="Tara," accent="magluto tayo." />
-        <Text style={styles.subtitle}>
-          Create an account to get meal ideas that fit your budget and your nearest palengke.
-        </Text>
-      </View>
-
+    <AuthShell topPlate="salad" bottomPlate="rice" onBack={goBack}>
       <View style={styles.field}>
         <TextField
           label="Full name"
@@ -205,11 +184,11 @@ export default function SignUpScreen() {
           error={errors.terms}
         >
           I agree to the{' '}
-          <InlineLink size={14.5} onPress={() => openLegal('Terms of Use')}>
+          <InlineLink size={13} onPress={() => openLegal('Terms of Use')}>
             Terms of Use
           </InlineLink>{' '}
           and{' '}
-          <InlineLink size={14.5} onPress={() => openLegal('Privacy Policy')}>
+          <InlineLink size={13} onPress={() => openLegal('Privacy Policy')}>
             Privacy Policy
           </InlineLink>
           , including how Palengkita uses my location.
@@ -217,7 +196,7 @@ export default function SignUpScreen() {
       </View>
 
       <PrimaryButton
-        title="CREATE ACCOUNT"
+        title="Create account"
         onPress={handleCreate}
         loading={loading}
         style={styles.primary}
@@ -225,51 +204,24 @@ export default function SignUpScreen() {
 
       <View style={styles.footer}>
         <Text style={styles.footerText}>May account ka na? </Text>
-        <InlineLink onPress={goBack}>Mag-log in</InlineLink>
+        <InlineLink onPress={() => router.replace('/login')}>Mag-log in</InlineLink>
       </View>
-    </AuthScreen>
+    </AuthShell>
   );
 }
 
 const styles = StyleSheet.create({
-  headingBlock: {
-    marginTop: 28,
-    marginBottom: 26,
-  },
-  subtitle: {
-    marginTop: 10,
-    fontFamily: fonts.body,
-    fontSize: 16,
-    lineHeight: 22,
-    color: colors.forest,
-  },
-  field: {
-    marginBottom: 20,
-  },
-  requirements: {
-    marginTop: 18,
-    gap: 8,
-  },
-  confirm: {
-    marginTop: 26,
-  },
-  terms: {
-    marginTop: 26,
-    marginBottom: 26,
-  },
-  primary: {
-    height: 53,
-  },
+  field: { marginBottom: 18 },
+  requirements: { marginTop: 14, gap: 6 },
+  confirm: { marginTop: 22 },
+  terms: { marginTop: 22, marginBottom: 22 },
+  primary: {},
   footer: {
-    marginTop: 34,
+    marginTop: 26,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  footerText: {
-    fontFamily: fonts.body,
-    fontSize: 16,
-    color: colors.forest,
-  },
+  footerText: { fontFamily: fonts.sans, fontSize: 14, color: ds.mutedForeground },
 });

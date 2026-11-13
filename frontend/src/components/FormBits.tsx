@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { colors, fonts, radii } from '@/theme';
+import { ds, fonts } from '@/theme';
 
 import { CheckIcon } from './icons';
 
@@ -9,8 +9,8 @@ import { CheckIcon } from './icons';
 export function InlineLink({
   children,
   onPress,
-  color = colors.forest,
-  size = 16,
+  color = ds.green,
+  size = 14,
   accessibilityLabel,
 }: {
   children: string;
@@ -26,7 +26,7 @@ export function InlineLink({
       accessibilityLabel={accessibilityLabel ?? children}
       suppressHighlighting
       style={{
-        fontFamily: fonts.bodyBold,
+        fontFamily: fonts.sansBold,
         fontSize: size,
         color,
         textDecorationLine: 'underline',
@@ -47,7 +47,7 @@ export function RequirementRow({ met, children }: { met: boolean; children: stri
       accessibilityLabel={`${children}, ${met ? 'met' : 'not met yet'}`}
     >
       <View style={[styles.reqCircle, met && styles.reqCircleMet]}>
-        {met ? <CheckIcon size={12} color={colors.white} strokeWidth={3} /> : null}
+        {met ? <CheckIcon size={12} color={ds.card} strokeWidth={3} /> : null}
       </View>
       <Text style={[styles.reqText, met && styles.reqTextMet]}>{children}</Text>
     </View>
@@ -80,7 +80,7 @@ export function Checkbox({
             !!error && !checked && styles.boxError,
           ]}
         >
-          {checked ? <CheckIcon size={14} color={colors.white} strokeWidth={3} /> : null}
+          {checked ? <CheckIcon size={14} color={ds.card} strokeWidth={3} /> : null}
         </Pressable>
         <Text style={styles.checkText}>{children}</Text>
       </View>
@@ -98,28 +98,28 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    height: 27,
+    height: 24,
   },
   reqCircle: {
     width: 19,
     height: 19,
     borderRadius: 10,
     borderWidth: 1.5,
-    borderColor: colors.muted,
+    borderColor: ds.mutedForeground,
     alignItems: 'center',
     justifyContent: 'center',
   },
   reqCircleMet: {
-    backgroundColor: colors.success,
-    borderColor: colors.success,
+    backgroundColor: ds.green,
+    borderColor: ds.green,
   },
   reqText: {
-    fontFamily: fonts.bodySemiBold,
-    fontSize: 14.5,
-    color: colors.forest,
+    fontFamily: fonts.sansMedium,
+    fontSize: 13,
+    color: ds.foreground,
   },
   reqTextMet: {
-    color: colors.success,
+    color: ds.green,
   },
 
   checkRow: {
@@ -131,29 +131,29 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     marginTop: 1,
-    borderRadius: radii.checkbox,
+    borderRadius: 4,
     borderWidth: 1.5,
-    borderColor: colors.forest,
+    borderColor: ds.foreground,
     alignItems: 'center',
     justifyContent: 'center',
   },
   boxChecked: {
-    backgroundColor: colors.forest,
+    backgroundColor: ds.green,
   },
   boxError: {
-    borderColor: colors.error,
+    borderColor: ds.destructive,
   },
   checkText: {
     flex: 1,
-    fontFamily: fonts.body,
-    fontSize: 14.5,
-    lineHeight: 19,
-    color: colors.forest,
+    fontFamily: fonts.sans,
+    fontSize: 13,
+    lineHeight: 18,
+    color: ds.foreground,
   },
   error: {
     marginTop: 6,
-    fontFamily: fonts.bodyMedium,
-    fontSize: 13,
-    color: colors.error,
+    fontFamily: fonts.sansMedium,
+    fontSize: 12,
+    color: ds.destructive,
   },
 });

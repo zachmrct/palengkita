@@ -8,7 +8,7 @@ import {
   type TextInputProps,
 } from 'react-native';
 
-import { colors, fonts, radii } from '@/theme';
+import { ds, fonts } from '@/theme';
 
 import { EyeIcon, EyeOffIcon } from './icons';
 
@@ -20,7 +20,7 @@ type Props = Omit<TextInputProps, 'style' | 'secureTextEntry'> & {
   error?: string | null;
   /** Renders a show/hide eye toggle and hides the text by default. */
   password?: boolean;
-  /** Input height in points. Login uses 54, sign up uses 48. */
+  /** Input height in points. */
   height?: number;
   /** Content aligned to the right of the label row (e.g. "Forgot password?"). */
   labelAccessory?: ReactNode;
@@ -31,7 +31,7 @@ export function TextField({
   label,
   error,
   password = false,
-  height = 54,
+  height = 44,
   labelAccessory,
   inputRef,
   onFocus,
@@ -41,7 +41,7 @@ export function TextField({
   const [focused, setFocused] = useState(false);
   const [hidden, setHidden] = useState(true);
 
-  const borderColor = error ? colors.error : focused ? colors.forest : colors.inputBorder;
+  const borderColor = error ? ds.destructive : focused ? ds.green : ds.border;
 
   return (
     <View>
@@ -62,9 +62,9 @@ export function TextField({
         <TextInput
           ref={inputRef}
           accessibilityLabel={label}
-          placeholderTextColor={colors.placeholder}
-          selectionColor={colors.forest}
-          cursorColor={colors.forest}
+          placeholderTextColor={ds.mutedForeground}
+          selectionColor={ds.green}
+          cursorColor={ds.green}
           style={styles.input}
           secureTextEntry={password && hidden}
           onFocus={(e) => {
@@ -86,9 +86,9 @@ export function TextField({
             style={styles.eye}
           >
             {hidden ? (
-              <EyeIcon size={24} color={colors.forest} />
+              <EyeIcon size={22} color={ds.mutedForeground} />
             ) : (
-              <EyeOffIcon size={24} color={colors.forest} />
+              <EyeOffIcon size={22} color={ds.mutedForeground} />
             )}
           </Pressable>
         ) : null}
@@ -108,34 +108,32 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 9,
+    marginBottom: 2,
   },
   label: {
-    fontFamily: fonts.bodyBold,
-    fontSize: 15,
-    color: colors.forest,
+    fontFamily: fonts.sansSemiBold,
+    fontSize: 10,
+    letterSpacing: 1.2,
+    textTransform: 'uppercase',
+    color: ds.green,
   },
   inputWrap: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.white,
-    borderWidth: 1,
-    borderRadius: radii.input,
-    paddingLeft: 17,
-    paddingRight: 14,
+    borderBottomWidth: 1,
   },
   inputWrapActive: {
-    borderWidth: 1.5,
-    paddingLeft: 16.5,
+    borderBottomWidth: 2,
   },
   input: {
     flex: 1,
     height: '100%',
-    fontFamily: fonts.body,
+    fontFamily: fonts.sans,
     fontSize: 16,
-    color: colors.forest,
+    color: ds.foreground,
     paddingVertical: 0,
-    // Keeps the web preview from drawing the browser focus ring over our border.
+    paddingHorizontal: 0,
+    // Keeps the web preview from drawing the browser focus ring over our underline.
     outlineStyle: 'none' as never,
   },
   eye: {
@@ -145,8 +143,8 @@ const styles = StyleSheet.create({
   },
   error: {
     marginTop: 6,
-    fontFamily: fonts.bodyMedium,
-    fontSize: 13,
-    color: colors.error,
+    fontFamily: fonts.sansMedium,
+    fontSize: 12,
+    color: ds.destructive,
   },
 });

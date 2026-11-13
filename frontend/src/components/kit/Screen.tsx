@@ -2,7 +2,7 @@ import { Link } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { ChevronDown, MapPin, ShoppingBasket, Sprout } from 'lucide-react-native';
 import type { ReactNode } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Animated, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ds, fonts, SHELL_MAX_WIDTH } from '@/theme';
@@ -62,7 +62,43 @@ export function Screen({ children }: { children: ReactNode }) {
   );
 }
 
+/**
+ * Like `Screen`, but the app header stays fixed and the caller supplies the scroll content as direct
+ * children (so `stickyHeaderIndices` can pin one of them). `scrollY` tracks the scroll offset.
+ */
+export function PinnedScreen({
+  scrollY,
+  stickyHeaderIndices,
+  children,
+}: {
+  scrollY: Animated.Value;
+  stickyHeaderIndices: number[];
+  children: ReactNode[];
+}) {
+  const insets = useSafeAreaInsets();
+
+  return (
+    <View style={styles.canvas}>
+      <StatusBar style="dark" />
+      <View style={[styles.shell, { paddingTop: insets.top }]}>
+        <AppHeader />
+        <Animated.ScrollView
+          style={styles.flex}
+          stickyHeaderIndices={stickyHeaderIndices}
+          scrollEventThrottle={16}
+          onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true })}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          {children}
+        </Animated.ScrollView>
+      </View>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
+  flex: { flex: 1 },
   canvas: { flex: 1, alignItems: 'center', backgroundColor: ds.canvas },
   shell: { flex: 1, width: '100%', maxWidth: SHELL_MAX_WIDTH, backgroundColor: ds.background },
   header: {

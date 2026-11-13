@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react-native';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import { ds, fonts } from '@/theme';
 
@@ -10,13 +10,15 @@ export function CategoryTabs({
   tabs,
   selected,
   onSelect,
+  style,
 }: {
   tabs: TabDef[];
   selected: string;
   onSelect: (key: string) => void;
+  style?: StyleProp<ViewStyle>;
 }) {
   return (
-    <View style={styles.row} accessibilityRole="tablist">
+    <View style={[styles.row, style]} accessibilityRole="tablist">
       {tabs.map(({ key, label, icon: Icon }) => {
         const active = key === selected;
         const color = active ? ds.foreground : ds.mutedForeground;

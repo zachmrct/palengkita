@@ -1,10 +1,6 @@
 import { MealBrowser } from '@/components/meals/MealBrowser';
-import { Screen } from '@/components/kit/Screen';
 
 export default function HomeScreen() {
-  return (
-    <Screen>
-      <MealBrowser home />
-    </Screen>
-  );
+  // Home builds its own scroll view (fixed header + pinned section header), so no <Screen> wrapper.
+  return <MealBrowser home />;
 }
